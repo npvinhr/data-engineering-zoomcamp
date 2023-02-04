@@ -76,11 +76,13 @@ Run your deployment in a local subprocess (the default if you don’t specify an
 
 How many rows were processed by the script?
 
-- 88,019
-- 192,297
-- 88,605
-- 190,225
-
+```
+# Run from the root of the repository
+prefect deployment build -sb github/zoom-homework ./Homework/week_2_workflow_orchestration/etl_web_to_gcs_github.py:etl_web_to_gcs -n "Web to GCS - GitHub"
+prefect deployment apply etl_web_to_gcs-deployment.yaml
+prefect agent start --work-queue "default"
+# Go to the Orion UI and click 'Quick run" on the deployment
+```
 
 
 ## Question 5. Email or Slack notifications
@@ -106,20 +108,30 @@ Alternatively, you can grab the webhook URL from your own Slack workspace and Sl
 
 How many rows were processed by the script?
 
-- `125,268`
-- `377,922`
-- `728,390`
-- `514,392`
+```
+prefect deployment build etl_web_to_gcs_github.py:etl_web_to_gcs -n "Web to GCS - Email"
+prefect deployment apply etl_web_to_gcs-deployment.yaml     # parameters: {'color': 'green', 'year': 2019, 'month': 4}
+prefect agent start --work-queue "default"
+# Go to the Prefect Cloud UI, add Email block, create Automation for email notification, and click 'Quick run" on the deployment
+```
+
+Received email:
+```
+Flow run etl-web-to-gcs/delightful-mayfly entered state `Completed` at 2023-02-04T11:30:26.680937+00:00.
+Flow ID: e7617aa1-d09a-47f1-96c5-7ee1ab9b65fd
+Flow run ID: 5f2e35d1-d281-4751-afc1-09d313a61632
+Flow run URL: https://app.prefect.cloud/account/d334efca-9642-45e7-8271-825168c2563a/workspace/b1f20e7e-ac96-4a8e-8a49-cf62f2bc5e3e/flow-runs/flow-run/5f2e35d1-d281-4751-afc1-09d313a61632
+State message: All states completed.
+```
 
 
 ## Question 6. Secrets
 
 Prefect Secret blocks provide secure, encrypted storage in the database and obfuscation in the UI. Create a secret block in the UI that stores a fake 10-digit password to connect to a third-party service. Once you’ve created your block in the UI, how many characters are shown as asterisks (*) on the next page of the UI?
 
-- 5
-- 6
-- 8
-- 10
+```
+# Create Secret block from Prefect Cloud UI
+```
 
 
 ## Submitting the solutions
